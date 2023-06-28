@@ -42,11 +42,22 @@ app.use(express.json())
 //3. ENDPOINTS -----------------------------------
 
 app.get("/products", (req, res) => {
-    res.send(productos)
+    res.send({msg: "Aqui tienes los productos", results: productos})
 });
 
 app.post("/products", (req, res) => {
-    
+    const newProduct = {
+        id: productos.length + 1, 
+        nombre: req.body.nombre, 
+        precio: req.body.precio
+    }
+
+    if(!req.body.nombre || !req.body.precio){
+        res.status(400).send({msg:"Please fill all inputs"})
+    }else{
+        productos.push(newProduct)
+        res.status(201).send({productos})
+    }
 })
 
 //4. LISTEN PUERTO -------------------------------
